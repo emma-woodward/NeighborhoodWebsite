@@ -6,19 +6,21 @@ import LoginPage from '../Pages/LoginPage';
 import HomePage from '../Pages/HomePage';
 import DashboardPage from '../Pages/DashboardPage';
 import PrivateRoute from './PrivateRoute';
+import styles from '../Styling.css';
 
 function Navbar() {
 
   return (
-    <div>
+    <div style={styles}>
       <Router>
-        <nav>
+        <div className="TheNavBar">
+          <nav>
             <ul>
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/login">Login</Link></li>
+                <li><Link to="/"><div className="IndividualLinks">Home</div></Link></li>
             </ul>
-        </nav>
+          </nav>
 
+        </div>
           <Switch>
               <Route exact path="/">
                 <HomePage />

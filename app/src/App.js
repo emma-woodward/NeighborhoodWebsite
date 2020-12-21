@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import './App.css';
+import './Styling.css';
 import LoginPage from './Pages/LoginPage';
 import fire from './fire';
 import { TextField, Button, Typography, IconButton, InputAdornment } from '@material-ui/core';
@@ -33,8 +33,11 @@ function App() {
   })
 
   return (
-    <div className="App">
-      <Button onClick={handleLogOut}>{l}</Button>
+    <div className="Styling">
+      <Button onClick={handleLogOut} style={{
+        float: 'right',
+        color: 'white',
+        }}>{l}</Button>
       <Navbar />
     </div>
   );

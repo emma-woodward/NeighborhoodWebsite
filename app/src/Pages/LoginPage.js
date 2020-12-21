@@ -14,12 +14,12 @@ function LoginPage() {
     }
 
   return (
-    <div>
+    <div className="textCenter">
         <h1>Login</h1>
         <TextField onChange={e=>{setEmail(e.target.value)}} label="Email" style={{
                 width: window.innerWidth / 4
                 }}></TextField> <br />
-        <TextField onChange={e=>{setPass(e.target.value)}} label="Password" style={{
+        <TextField type="password" onChange={e=>{setPass(e.target.value)}} label="Password" style={{
                 width: window.innerWidth / 4
                 }}></TextField> <br /> <br />
         <Button size="large" variant="outlined" onClick={handleLogin}>Log in</Button>
