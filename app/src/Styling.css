@@ -20,9 +20,25 @@
     margin-right: 10%;
 }
 
-.IndividualLinks{
-    color: white;
+.IndividualLinks div{
+    color: #a3aaae;
     text-align: center;
+    width: auto;
+    height: max-content;
+    padding: 10px;
+}
+
+.IndividualLinks div:hover{
+    color: white;   
+}
+
+.IndividualLinks:visited{
+    color: #a3aaae;
+    text-decoration: none;
+}
+
+.IndividualLinks{
+    text-decoration: none;
 }
 
 .MembersLoginDiv{
