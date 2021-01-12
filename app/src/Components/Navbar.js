@@ -5,6 +5,7 @@ import {
 import LoginPage from '../Pages/LoginPage';
 import HomePage from '../Pages/HomePage';
 import DashboardPage from '../Pages/DashboardPage';
+import PublicDocuments from '../Pages/PublicDocuments';
 import PrivateRoute from './PrivateRoute';
 import styles from '../Styling.css';
 import { AuthProvider } from '../Contexts/AuthContext';
@@ -23,7 +24,8 @@ function Navbar() {
           <a href="/login"><Button style={{color: "white", float: "right", height: "50%"}}size="large" variant="outlined">Login</Button></a>}
             <ul>
                 <li><Link to="/" className="IndividualLinks"><div>Home</div></Link></li>
-                <li><Link to="/dashboard" className="IndividualLinks"><div>Dashboard</div></Link></li>
+                {currentUser && <li><Link to="/dashboard" className="IndividualLinks"><div>Dashboard</div></Link></li>}
+                <li><Link to="/public_documents" className="IndividualLinks"><div>Public Documents</div></Link></li>
             </ul>
           </nav>
         </div>
@@ -35,6 +37,10 @@ function Navbar() {
 
               <Route path="/login">
                 <LoginPage />
+              </Route>
+
+              <Route path="/public_documents">
+                <PublicDocuments />
               </Route>
 
               <PrivateRoute path="/dashboard" component={DashboardPage} />
