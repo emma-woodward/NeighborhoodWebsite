@@ -105,3 +105,22 @@
 .LogButton:hover{
     color: white !important;
 }
+
+.DashboardPage{
+    display: flex;
+}
+
+.DashboardAnnouncementsDiv{
+    background-color: #F5F5F5;
+    border: solid 1.5px black;
+    margin: 20%;
+    padding: 2%;
+}
+
+.DashboardAccountDiv{
+    border: solid 1.5px black;
+    margin-right: 15%;
+    padding: 2%;
+    text-align: center;
+    background-color: #F5F5F5;
+}

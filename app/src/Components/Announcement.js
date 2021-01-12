@@ -2,15 +2,13 @@ import { TextField, Button, Typography, IconButton, InputAdornment } from '@mate
 import {
     NavLink, Route, Switch,  BrowserRouter as Router, Link
   } from "react-router-dom";
-import LoginPage from '../Pages/LoginPage';
-import HomePage from '../Pages/HomePage';
-import DashboardPage from '../Pages/DashboardPage';
 
-function Announcement() {
+function Announcement(props) {
 
   return (
     <div>
-      This is the announcement component
+      <b>{props.title} ({props.timestamp})</b>
+      <p>{props.message}</p>
     </div>
   );
 }
