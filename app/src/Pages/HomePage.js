@@ -7,10 +7,6 @@ function HomePage() {
   return (
     <div>
         <h1 className="textCenter">Welcome!</h1>
-
-        <div className="PublicDocumentsDiv">
-          Public Documents
-        </div>
     </div>
   );
 }

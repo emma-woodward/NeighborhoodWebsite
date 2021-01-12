@@ -76,6 +76,9 @@
 .DocumentExpandDiv{
     margin-left: auto;
     width: auto;
+    font-family: "wide font";
+    font-size: 25px;
+    margin-right: 4px;
 }
 
 .DocumentDiv:hover{
@@ -91,4 +94,14 @@
     width: 18%;
     display: flex;
     height: fit-content;
+    margin-bottom: 20px;
+}
+
+.LogButton{
+    color: silver !important;
+    float: right;
+}
+
+.LogButton:hover{
+    color: white !important;
 }

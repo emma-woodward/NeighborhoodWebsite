@@ -21,9 +21,8 @@ const[expandedView, setExapndedView] = useState(false);
                 {props.DocumentTitle}
             </div>
             </a>
-        <div className="DocumentExpandDiv" onClick={()=>{
-            setExapndedView(!expandedView);
-        }}>  +  </div>
+        {expandedView ? <div className="DocumentExpandDiv" onClick={()=>{setExapndedView(!expandedView);}}>  -  </div> : 
+        <div className="DocumentExpandDiv" onClick={()=>{setExapndedView(!expandedView);}}>  +  </div>}
 
     </div>
     <div className="DocumentDescriptionDiv">
