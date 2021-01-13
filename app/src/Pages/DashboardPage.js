@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAuth} from '../Contexts/AuthContext';
 import { Route, Redirect, Link } from 'react-router-dom';
 import Announcement from '../Components/Announcement';
@@ -6,7 +6,12 @@ import Announcement from '../Components/Announcement';
 function DashboardPage() {
 
   const user = useAuth().currentUser;
-  const {sendPasswordResetEmail} = useAuth()
+  const {sendPasswordResetEmail} = useAuth();
+  const[announcement, setAnnouncement] = useState({
+    timeStamp: '',
+    title: '',
+    message: ''
+  });
 
   function handlePasswordReset(){
     try{
@@ -19,8 +24,30 @@ function DashboardPage() {
   }
 
   function getMostRecentAnnouncement(){
-    
+    try{
+      fetch("http://localhost:5000/most_recent_announcement",{
+        method: "GET",
+        headers:{
+          Accept: 'application/json',
+          'Content-Type':'application/json',
+        },
+      }).then((res)=> res.json()).then((json)=>{
+        setAnnouncement({
+          title: json.title,
+          timeStamp: json.ts,
+          message: json.message
+        });
+      });
+
+    }
+    catch(e){
+      console.log(e);
+    }
   }
+
+  useEffect(()=>{
+    getMostRecentAnnouncement();
+  })
 
   return (
     <div className="DashboardPage">
@@ -40,15 +67,13 @@ function DashboardPage() {
             margin: "2%"
         }}>
           <h1>Most Recent Announcement</h1>
-          <Announcement title="Example Announcement" message="This is an announcement about nothing" timestamp="1/12/2021"/>
+          <Announcement title={announcement.title} message={announcement.message} timestamp={announcement.timeStamp} />
           <p style={{
             float: "right",
             fontWeight: "bold",
             color: "blue"
           }}>More Announcements</p>
         </div>
-
-
     </div>
   );
 }
