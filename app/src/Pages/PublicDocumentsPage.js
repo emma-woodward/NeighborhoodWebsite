@@ -1,6 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
-import { TextField, Button, Typography, IconButton, InputAdornment } from '@material-ui/core';
 import Document from '../Components/Document';
 
 function PublicDocuments() {

@@ -6,6 +6,7 @@ import LoginPage from '../Pages/LoginPage';
 import HomePage from '../Pages/HomePage';
 import DashboardPage from '../Pages/DashboardPage';
 import PublicDocumentsPage from '../Pages/PublicDocumentsPage';
+import MoreAnnouncementsPage from '../Pages/MoreAnnouncementsPage';
 import PrivateRoute from './PrivateRoute';
 import styles from '../Styling.css';
 import { AuthProvider } from '../Contexts/AuthContext';
@@ -43,6 +44,7 @@ function Navbar() {
               </Route>
 
               <PrivateRoute path="/dashboard" component={DashboardPage} />
+              <PrivateRoute path="/more_announcements" component={MoreAnnouncementsPage} />
           </Switch>
           </AuthProvider>
       </Router>

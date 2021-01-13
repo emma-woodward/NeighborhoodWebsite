@@ -72,7 +72,7 @@ function DashboardPage() {
             float: "right",
             fontWeight: "bold",
             color: "blue"
-          }}>More Announcements</p>
+          }}><Link to="/more_announcements">More Announcements</Link></p>
         </div>
     </div>
   );
