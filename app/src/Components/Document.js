@@ -1,6 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import { TextField, Button, Typography, IconButton, InputAdornment } from '@material-ui/core';
-
+import React, {useState } from 'react';
 /**
  * Document Component
  * 

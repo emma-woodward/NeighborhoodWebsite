@@ -1,12 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {useAuth} from '../Contexts/AuthContext';
-import { Route, Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Announcement from '../Components/Announcement';
 
 function DashboardPage() {
-
-  const user = useAuth().currentUser;
-  const {sendPasswordResetEmail} = useAuth();
   const[announcement, setAnnouncement] = useState({
     timeStamp: '',
     title: '',
@@ -15,7 +11,6 @@ function DashboardPage() {
 
   function handlePasswordReset(){
     try{
-      sendPasswordResetEmail(user.email)
       alert('Email Sent');
     }
     catch(e){
@@ -47,7 +42,7 @@ function DashboardPage() {
 
   useEffect(()=>{
     getMostRecentAnnouncement();
-  })
+  }, [])
 
   return (
     <div className="DashboardPage">
@@ -57,7 +52,7 @@ function DashboardPage() {
           margin: "2%"
         }}>
           <h1>Your Account</h1>
-          <p>Currently Signed in as <b>{user.email}</b></p>
+          <p>Currently Signed in as <b></b></p>
           <Link onClick={handlePasswordReset}>Reset Password</Link>
         </div>
 

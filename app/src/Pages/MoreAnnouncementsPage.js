@@ -32,9 +32,14 @@ function MoreAnnouncementsPage() {
 });
 
   return (
+    <>
+    <h1 style={{marginLeft: "5%"}}>Announcements</h1>
     <div className="MoreAnnouncementsPageDiv">
+      <div className="MoreAnnouncementsPageAnnouncementsDiv">
         {output}
+      </div>
     </div>
+    </>
   );
 }
 

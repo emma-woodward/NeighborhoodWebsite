@@ -115,6 +115,7 @@
     border: solid 1.5px black;
     margin: 20%;
     padding: 2%;
+    display: inline-block;
 }
 
 .DashboardAccountDiv{
@@ -123,4 +124,19 @@
     padding: 2%;
     text-align: center;
     background-color: #F5F5F5;
+    display: inline-block;
+}
+
+.MoreAnnouncementsPageDiv{
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 5%;
+    display: inline-block;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+}
+
+.MoreAnnouncementsPageAnnouncementsDiv div{
+    border-top: 1px solid;
 }

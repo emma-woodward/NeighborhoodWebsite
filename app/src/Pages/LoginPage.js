@@ -1,15 +1,14 @@
-import React, {useState, useEffect} from 'react';
-import { TextField, Button, Typography, IconButton, InputAdornment } from '@material-ui/core';
-import { useAuth } from '../Contexts/AuthContext';
+import React, {useState } from 'react';
+import { TextField, Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 
 
 function LoginPage() {
     const[email, setEmail] = useState('');
     const[pass, setPass] = useState('');
-    const { login, currentUser } = useAuth();
     const [error, setError] = useState("");
     const history = useHistory();
+    const currentUser = true;
 
     if(currentUser){
       history.push("/");
@@ -18,9 +17,14 @@ function LoginPage() {
     async function handleLoginSubmit(){
       try{
         setError("");
-        await login(email, pass);
-        history.push("/");
-      }
+
+        const response = await fetch("/login",{
+          method: "POST",
+          body: JSON.stringify({
+
+          })
+        });
+        }
       catch{
         setError("Failed to Login...");
       }
