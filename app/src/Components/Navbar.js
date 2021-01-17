@@ -7,17 +7,18 @@ import PublicDocumentsPage from '../Pages/PublicDocumentsPage';
 import MoreAnnouncementsPage from '../Pages/MoreAnnouncementsPage';
 import PrivateRoute from './PrivateRoute';
 import styles from '../Styling.css';
+import { useAuth } from '../Contexts/AuthContext';
 
 function Navbar() {
 
-  const currentUser = true;
+  const {currentUser, logout} = useAuth();
 
   return (
     <div style={styles}>
       <Router>
         <div className="TheNavBar">
           <nav>
-          {currentUser ? <Button className="LogButton" size="large" variant="outlined" >Log Out</Button> : 
+          {currentUser ? <Button className="LogButton" size="large" variant="outlined" onClick={logout}>Log Out</Button> : 
           <a href="/login"><Button className="LogButton" size="large" variant="outlined">Login</Button></a>}
             <ul>
                 <li><Link to="/" className="IndividualLinks"><div>Home</div></Link></li>

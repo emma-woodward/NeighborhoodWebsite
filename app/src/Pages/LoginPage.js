@@ -1,32 +1,25 @@
 import React, {useState } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-
+import { useAuth } from '../Contexts/AuthContext';
 
 function LoginPage() {
     const[email, setEmail] = useState('');
     const[pass, setPass] = useState('');
     const [error, setError] = useState("");
     const history = useHistory();
-    const currentUser = true;
+    const {currentUser, login} = useAuth();
 
     if(currentUser){
       history.push("/");
     }
 
-    async function handleLoginSubmit(){
+    function handleLoginSubmit(){
       try{
-        setError("");
-
-        const response = await fetch("/login",{
-          method: "POST",
-          body: JSON.stringify({
-
-          })
-        });
-        }
-      catch{
-        setError("Failed to Login...");
+        login(email, pass);
+      }
+      catch(e){
+        console.log(e);
       }
     }
 

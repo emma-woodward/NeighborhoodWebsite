@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const crypto = require('crypto');
 const app = express();
 
+//TODO: Make this so that it's release ready
 const PORT = 5000;
 
 //Middleware
@@ -32,8 +33,6 @@ async function isValidAdmin(sessionId){
 
     return false;
 }
-
-console.log()
 
 //Routes
 //Create a new user
@@ -74,9 +73,11 @@ app.post("/login", async(req, res)=>{
             }
             
             if(result){
-                const sessionId = crypto.randomBytes(50).toString("hex");
-                pool.query("UPDATE users SET sessionId = $1, expires = (current_date + 1) WHERE email = $2", [sessionId, req.body.email]);
-                res.send({"success": "logged in"});
+                const id = crypto.randomBytes(50).toString("hex");
+                pool.query("UPDATE users SET sessionId = $1, expires = (current_date + 1) WHERE email = $2", [id, req.body.email]);
+                res.json({
+                    sessionId: id
+                })
             }
             else{
                 res.send({"error": "Email or password is invalid"});
@@ -91,8 +92,9 @@ app.post("/login", async(req, res)=>{
 //Log out
 app.post("/logout", async(req, res)=>{
     try{
-        if(isValidUser(req.sessionId)){
-            await pool.query("UPDATE users SET expires = null, sessionId = null WHERE sessionId = $1", [req.sessionId]);
+
+        if(isValidUser(req.body.sessionId)){
+            await pool.query("UPDATE users SET expires = null, sessionId = null WHERE sessionId = $1", [req.body.sessionId]);
             res.send({"success":"Logged Out"});
         }
         else{
@@ -138,7 +140,7 @@ app.post("/most_recent_announcement", async(req, res)=>{
         }
     }
     catch(e){
-        console.log(e.message);
+        console.log(e);
     }
 })
 
@@ -166,7 +168,6 @@ app.post("/create_announcement", async(req, res)=>{
         console.log(e);
     }
 })
-
 
 app.listen(PORT, ()=>{
     console.log("Server has started on port " + PORT);

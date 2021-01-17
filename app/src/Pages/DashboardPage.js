@@ -20,8 +20,9 @@ function DashboardPage() {
 
   function getMostRecentAnnouncement(){
     try{
-      fetch("http://localhost:5000/most_recent_announcement",{
-        method: "GET",
+      //FIXME:
+      fetch("/most_recent_announcement",{
+        method: "POST",
         headers:{
           Accept: 'application/json',
           'Content-Type':'application/json',
