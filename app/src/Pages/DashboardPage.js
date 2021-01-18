@@ -9,6 +9,10 @@ function DashboardPage() {
     message: ''
   });
 
+  function convertTimeStamp(ts){
+    return new Date(ts).toLocaleString();
+  }
+
   function handlePasswordReset(){
     try{
       alert('Email Sent');
@@ -47,23 +51,9 @@ function DashboardPage() {
 
   return (
     <div className="DashboardPage">
-        <div className="DashboardAccountDiv" style={{
-          width: window.innerWidth / 6,
-          height: window.innerHeight / 8,
-          margin: "2%"
-        }}>
-          <h1>Your Account</h1>
-          <p>Currently Signed in as <b></b></p>
-          <Link onClick={handlePasswordReset}>Reset Password</Link>
-        </div>
-
-        <div className="DashboardAnnouncementsDiv" style={{
-            width: window.innerWidth /4,
-            height: window.innerHeight / 4,
-            margin: "2%"
-        }}>
+        <div>
           <h1>Most Recent Announcement</h1>
-          <Announcement title={announcement.title} message={announcement.message} timestamp={announcement.timeStamp} />
+          <Announcement title={announcement.title} message={announcement.message} timestamp={convertTimeStamp(announcement.timeStamp)} />
           <p style={{
             float: "right",
             fontWeight: "bold",

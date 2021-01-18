@@ -1,18 +1,13 @@
 import React, {useState } from 'react';
 import { TextField, Button } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { useAuth } from '../Contexts/AuthContext';
 
 function LoginPage() {
     const[email, setEmail] = useState('');
     const[pass, setPass] = useState('');
     const [error, setError] = useState("");
-    const history = useHistory();
     const {currentUser, login} = useAuth();
-
-    if(currentUser){
-      history.push("/");
-    }
 
     function handleLoginSubmit(){
       try{
@@ -25,6 +20,7 @@ function LoginPage() {
 
   return (
     <div className="textCenter">
+      {currentUser && <Redirect to="/" />}
         <h1>Login</h1>
         <p style={{color: "red"}}>{error}</p>
         <TextField onChange={e=>{setEmail(e.target.value)}} label="Email" style={{

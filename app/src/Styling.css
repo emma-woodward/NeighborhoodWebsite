@@ -7,7 +7,7 @@
     background-color: black;
     width: auto;
     padding-right: 2%;
-    padding-top: .001em;
+    padding-top: .50em;
     padding-bottom: .001em;
 }
 
@@ -139,4 +139,12 @@
 
 .MoreAnnouncementsPageAnnouncementsDiv div{
     border-top: 1px solid;
+}
+
+.navBarDropDownMenuToggle{
+    color: silver !important;
+}
+
+.navBarDropDownMenuToggle:hover{
+    color: white !important;
 }
