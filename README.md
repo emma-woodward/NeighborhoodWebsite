@@ -10,5 +10,4 @@ React, Express, and PostgresSQL.
 * Announcements 
 * Being able to search for announcements
 * Public / Private Facing Documents
-* More to come as I implement these core features
 * More to Come
