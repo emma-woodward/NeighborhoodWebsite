@@ -10,8 +10,14 @@ function LoginPage() {
     const {currentUser, login} = useAuth();
 
     function handleLoginSubmit(){
+      setError('');
+
       try{
-        login(email, pass);
+        const loggedIn = login(email, pass);
+        
+        if(!loggedIn){
+          setError("Email or Password Is Incorrect")
+        }
       }
       catch(e){
         console.log(e);

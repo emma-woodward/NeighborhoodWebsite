@@ -23,16 +23,17 @@ export function AuthProvider({children}){
                 })
             }).then((res)=> res.json()).then((json)=>{
                 //TODO: Check if the reponse is an error and handle it
-                setCurrentUser({
-                    sessionId: json.sessionId
-                })
-
-                  if(currentUser){
-                      console.log("FRONTEND: Logged in");
-                  }
-                  else{
-                      console.log("FRONTEND: Did not log in...");
-                  }
+                console.log(json.error);
+                console.log(json.success);
+                console.log(json);
+                if(json.success){
+                    setCurrentUser({
+                        sessionId: json.sessionId
+                    })
+                }
+                else{
+                    
+                }
 
                   console.log(json.sessionId);
               });
@@ -67,15 +68,37 @@ export function AuthProvider({children}){
         }
     }
 
-    //TODO: 
-    function resetPassword(){
-        return null;
+    function resetPassword(newPassword){
+        if(currentUser){
+            try{
+                fetch("/reset_password",{
+                    method: "POST",
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                      },
+                    body: JSON.stringify({
+                        sessionId: currentUser.sessionId,
+                        newPassword: newPassword
+                    })
+                  }).then((res)=> res.json()).then((json)=>{
+                      console.log(json);
+                  });
+            }
+            catch(e){
+                console.log(e);
+            }
+        }
+        else{
+            //TODO: Handle this
+        }
     }
 
     const value = {
         currentUser,
         login,
-        logout
+        logout,
+        resetPassword
     }
 
     return(

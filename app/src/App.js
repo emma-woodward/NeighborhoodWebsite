@@ -6,11 +6,9 @@ import {AuthProvider} from './Contexts/AuthContext';
 function App() {
 
   return (
-    <AuthProvider>
     <div className="Styling">
       <Navbar />
     </div>
-    </AuthProvider>
   );
 }
 

@@ -5,7 +5,8 @@ const bcrypt = require("bcrypt");
 const crypto = require('crypto');
 const app = express();
 
-//TODO: Make this so that it's release ready
+//TODO: Stop using crypto library
+//TODO: Move the port over to a .env file
 const PORT = 5000;
 
 //Middleware
@@ -78,6 +79,8 @@ app.post("/login", async(req, res)=>{
                 res.json({
                     sessionId: id
                 })
+
+                res.send({"success":"Logged in"});
             }
             else{
                 res.send({"error": "Email or password is invalid"});
@@ -107,6 +110,7 @@ app.post("/logout", async(req, res)=>{
     }
 })
 
+//TODO:
 //Delete a user
 app.post("/delete_user", async(req, res)=>{
     try{
@@ -123,10 +127,20 @@ app.post("/delete_user", async(req, res)=>{
 app.post("/reset_password", async(req, res)=>{
     try{
         if(isValidUser(req.sessionId)){
-
+            const hashedPassword = await bcrypt.hash(req.body.newPassword, 10, (err, hash)=>{
+                if(err){
+                    throw err;
+                }
+        
+                const result = pool.query("UPDATE users SET hash = $1 WHERE sessionId = $2", 
+                [hash, req.body.sessionId]);
+                });
         }
+
+        res.send({"success": "Password has changed"});
     }
     catch(e){
+        res.send({"error": "Could not change password"});
         console.log(e);
     }
 })
@@ -168,6 +182,16 @@ app.post("/create_announcement", async(req, res)=>{
         console.log(e);
     }
 })
+
+app.post("/yes", async(req, res)=>{
+    const hashedPassword = await bcrypt.hash("password", 10, (err, hash)=>{
+        if(err){
+            throw err;
+        }
+        res.send(hash);
+        }
+    );
+});
 
 app.listen(PORT, ()=>{
     console.log("Server has started on port " + PORT);

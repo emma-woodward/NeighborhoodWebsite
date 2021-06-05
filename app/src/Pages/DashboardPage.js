@@ -13,18 +13,9 @@ function DashboardPage() {
     return new Date(ts).toLocaleString();
   }
 
-  function handlePasswordReset(){
-    try{
-      alert('Email Sent');
-    }
-    catch(e){
-      console.log(e);
-    }
-  }
-
+  //TODO: Error handling for this function
   function getMostRecentAnnouncement(){
     try{
-      //FIXME:
       fetch("/most_recent_announcement",{
         method: "POST",
         headers:{
