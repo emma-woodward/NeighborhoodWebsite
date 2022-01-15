@@ -11,3 +11,26 @@ React, Express, and PostgresSQL.
 * Being able to search for announcements
 * Public / Private Facing Documents
 * More to Come
+
+TODO: 
+# How to Setup and Run Project
+## Setting up the database
+## Setting up the backend
+## Setting up the frontend
+
+## Database stuff
+Within the backend directory there's a file `database.sql` that contains all of the commands for PostgreSql for creating tables and entries for those tables.
+
+## Running the Backend
+Enter terminal and type `node index.js`.
+
+## Running the Frontend
+Enter terminal and type `npm start`.
+
+
+## PostgreSQL
+sudo -i 
+sudo -i -u postgres 
+psql
+
+[PostgreSQL Cheat Sheet](https://www.postgresqltutorial.com/postgresql-cheat-sheet/)
