@@ -34,3 +34,6 @@ sudo -i -u postgres
 psql
 
 [PostgreSQL Cheat Sheet](https://www.postgresqltutorial.com/postgresql-cheat-sheet/)
+
+# Known Issues
+- Reset page does not load from either button in dropdown or manually typing in url.

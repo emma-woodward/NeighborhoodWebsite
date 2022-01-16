@@ -14,15 +14,6 @@ function DashboardPage() {
     return new Date(ts).toLocaleString();
   }
 
-  function handlePasswordReset(){
-    try{
-      alert('Email Sent');
-    }
-    catch(e){
-      console.log(e);
-    }
-  }
-
   function getMostRecentAnnouncement(){
     try{
       //FIXME:

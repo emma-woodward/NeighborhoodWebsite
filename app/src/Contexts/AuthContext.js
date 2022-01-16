@@ -14,17 +14,19 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
+  const [count, setCount] = useState(0);
 
   useEffect(()=>{
-    let name = 'sessionid=';
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let grabbedSessionId = decodedCookie.substring(name.length, decodedCookie.length);
+    const name = 'sessionid=';
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const grabbedSessionId = decodedCookie.substring(name.length, decodedCookie.length);
     if(grabbedSessionId.length > 0){
       setCurrentUser({
         sessionId: grabbedSessionId,
       });
     }
-  });
+    setCount(100);
+  }, [count]);
 
   async function login(email, password) {
     try {

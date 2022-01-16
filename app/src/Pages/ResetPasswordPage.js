@@ -8,8 +8,8 @@ function ResetPassword() {
   const [newPass, setNewPass] = useState("");
   const [confirmNewPass, setConfirmNewPass] = useState("");
   const [error, setError] = useState("");
+  const [passwordResetSuccessful, setPasswordResetSuccessful] = useState(false);
   const { currentUser, resetPassword } = useAuth();
-  const [goHome, setGoHome] = useState(false);
 
   const successScreen = (
     <div className="textCenter">
@@ -54,33 +54,31 @@ function ResetPassword() {
         }}
       ></TextField>{" "}
       <br /> <br />
-      <Button size="large" variant="outlined" onClick={handlePasswordReset}>
+      <Button size="large" variant="outlined" onClick={()=>{
+            setError('');
+    
+            if (newPass === confirmNewPass) {
+              resetPassword(oldPass, newPass)
+                .catch((e) => {
+                  setError("Old password is not correct");
+                  console.log(e);
+                })
+                .finally(() => {
+                  setPasswordResetSuccessful(true);
+                });
+            } else {
+              setError("New password does not match confirmed password");
+            }
+      }}>
         Reset Password
       </Button>
     </div>
   );
 
-  function handlePasswordReset() {
-    setError("");
-
-    if (newPass === confirmNewPass) {
-      resetPassword(oldPass, newPass)
-        .catch((e) => {
-          setError("Old password is not correct");
-          console.log(e);
-        })
-        .finally(() => {
-          setGoHome(true);
-        });
-    } else {
-      setError("New password does not match confirmed password");
-    }
-  }
-
   return (
-    <div className="textCenter" disabled={goHome}>
+    <div className="textCenter">
       {!currentUser && <Redirect to="/login" />}
-      {goHome ? successScreen : resetScreen}
+      {passwordResetSuccessful ? successScreen : resetScreen}
     </div>
   );
 }

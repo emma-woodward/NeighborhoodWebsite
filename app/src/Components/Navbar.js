@@ -1,16 +1,15 @@
 import { Button } from '@material-ui/core';
-import { Route, Switch,  BrowserRouter as Router, Link, Redirect } from "react-router-dom";
+import { Route, Switch,  BrowserRouter as Router, Link } from "react-router-dom";
 import PrivateRoute from './PrivateRoute';
 import 'bootstrap/dist/css/bootstrap.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useAuth } from '../Contexts/AuthContext';
 import * as Pages from '../Pages';
 import styles from '../Styling.css';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function Navbar() {
-
   const {currentUser, logout} = useAuth();
-  const redirectToReset = (<Redirect to="/reset_password"/>);
 
   const myAccountDropDown = (
     <Dropdown className="navBarDropDownMenu" style={{float: "right"}}>
@@ -19,7 +18,7 @@ function Navbar() {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item onClick={redirectToReset}>Reset Password</Dropdown.Item>
+        <Dropdown.Item onClick={goToResetPage}>Reset Password</Dropdown.Item>
         <Dropdown.Item onClick={logout}>Log Out</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
@@ -51,7 +50,7 @@ function Navbar() {
                 <Pages.PublicDocumentsPage />
               </Route>
 
-              <PrivateRoute path="/reset_password" component={Pages.ResetPage} />
+              <PrivateRoute path="/reset_password" component={Pages.ResetPasswordPage} />
               <PrivateRoute path="/dashboard" component={Pages.DashboardPage} />
               <PrivateRoute path="/more_announcements" component={Pages.MoreAnnouncementsPage} />
           </Switch>

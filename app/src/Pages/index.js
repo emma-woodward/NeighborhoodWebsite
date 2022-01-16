@@ -1,5 +1,5 @@
 import LoginPage from '../Pages/LoginPage';
-import ResetPage from '../Pages/ResetPassword'
+import ResetPasswordPage from './ResetPasswordPage'
 import HomePage from '../Pages/HomePage';
 import DashboardPage from '../Pages/DashboardPage';
 import PublicDocumentsPage from '../Pages/PublicDocumentsPage';
@@ -7,7 +7,7 @@ import MoreAnnouncementsPage from '../Pages/MoreAnnouncementsPage';
 
 export {
     LoginPage,
-    ResetPage,
+    ResetPasswordPage,
     HomePage,
     DashboardPage,
     PublicDocumentsPage,
