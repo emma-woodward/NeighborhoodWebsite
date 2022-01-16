@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
         .then((res) => res.json())
         .then((json) => {
           if (json.error) {
-              throw "Ope!";
+              throw json.error;
           } else {
             setCurrentUser({
               sessionId: json.sessionId,
@@ -64,11 +64,10 @@ export function AuthProvider({ children }) {
     }
   }
 
-  //TODO:
-  function resetPassword(oldPass, newPass) {
+  async function resetPassword(oldPass, newPass) {
     if (currentUser) {
       try {
-        fetch("/reset_password", {
+        await fetch("/reset_password", {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -83,7 +82,7 @@ export function AuthProvider({ children }) {
           .then((res) => res.json())
           .then((json) => {
             if (json.error) {
-              return -1;
+                throw json.error;
             } else {
               setCurrentUser({
                 sessionId: json.sessionId,
@@ -93,7 +92,6 @@ export function AuthProvider({ children }) {
       } catch (e) {
         throw e;
       }
-    } else {
     }
   }
 
