@@ -80,8 +80,7 @@ function ResetPassword() {
   return (
     <div className="textCenter" disabled={goHome}>
       {!currentUser && <Redirect to="/login" />}
-      {goHome && successScreen}
-      {!goHome && resetScreen}
+      {goHome ? successScreen : resetScreen}
     </div>
   );
 }

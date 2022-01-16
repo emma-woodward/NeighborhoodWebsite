@@ -5,6 +5,8 @@
 - Allow admins to create, modify, and remove announcements.
 - Allow admins to create, modify, and remove documents in both public and private facing sections of the site.
 - Meaningful documentation for running and building project.
+- Fix vulnerabilities in dependencies.
+- Replace @material-ui components with @mui components.
 
 ## Version 0.1
 - Fix any bugs and issues with 1.0.

@@ -1,22 +1,16 @@
 import { Button } from '@material-ui/core';
-import { Route, Switch,  BrowserRouter as Router, Link } from "react-router-dom";
+import { Route, Switch,  BrowserRouter as Router, Link, Redirect } from "react-router-dom";
 import PrivateRoute from './PrivateRoute';
-import styles from '../Styling.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import { useAuth } from '../Contexts/AuthContext';
 import Dropdown from 'react-bootstrap/Dropdown';
-
-//Page Imports
-import LoginPage from '../Pages/LoginPage';
-import ResetPage from '../Pages/ResetPassword'
-import HomePage from '../Pages/HomePage';
-import DashboardPage from '../Pages/DashboardPage';
-import PublicDocumentsPage from '../Pages/PublicDocumentsPage';
-import MoreAnnouncementsPage from '../Pages/MoreAnnouncementsPage';
+import { useAuth } from '../Contexts/AuthContext';
+import * as Pages from '../Pages';
+import styles from '../Styling.css';
 
 function Navbar() {
 
   const {currentUser, logout} = useAuth();
+  const redirectToReset = (<Redirect to="/reset_password"/>);
 
   const myAccountDropDown = (
     <Dropdown className="navBarDropDownMenu" style={{float: "right"}}>
@@ -25,7 +19,7 @@ function Navbar() {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item><Link to="/reset_password">Reset Password</Link></Dropdown.Item>
+        <Dropdown.Item onClick={redirectToReset}>Reset Password</Dropdown.Item>
         <Dropdown.Item onClick={logout}>Log Out</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
@@ -36,7 +30,7 @@ function Navbar() {
       <Router>
         <div className="TheNavBar">
           <nav>
-          {currentUser ? myAccountDropDown : <a href="/login"><Button className="LogButton" size="large" variant="outlined">Login</Button></a>}
+            {currentUser ? myAccountDropDown : <a href="/login"><Button className="LogButton" size="large" variant="outlined">Login</Button></a>}
             <ul>
                 <li><Link to="/" className="IndividualLinks"><div>Home</div></Link></li>
                 {currentUser && <li><Link to="/dashboard" className="IndividualLinks"><div>Dashboard</div></Link></li>}
@@ -46,20 +40,20 @@ function Navbar() {
         </div>
           <Switch>
               <Route exact path="/">
-                <HomePage />
+                <Pages.HomePage />
               </Route>
 
               <Route path="/login">
-                <LoginPage />
+                <Pages.LoginPage />
               </Route>
 
               <Route path="/public_documents">
-                <PublicDocumentsPage />
+                <Pages.PublicDocumentsPage />
               </Route>
 
-              <PrivateRoute path="/reset_password" component={ResetPage} />
-              <PrivateRoute path="/dashboard" component={DashboardPage} />
-              <PrivateRoute path="/more_announcements" component={MoreAnnouncementsPage} />
+              <PrivateRoute path="/reset_password" component={Pages.ResetPage} />
+              <PrivateRoute path="/dashboard" component={Pages.DashboardPage} />
+              <PrivateRoute path="/more_announcements" component={Pages.MoreAnnouncementsPage} />
           </Switch>
       </Router>
     </div>

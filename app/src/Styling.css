@@ -60,41 +60,13 @@
     padding: 10px;
 }
 
-.DocumentDiv{
+.Document{
     margin: auto;
     border-style: solid;
-    width: 18%;
+    width: 30%;
     display: flex;
     height: fit-content;
-}
-
-.DocumentDiv a{ 
-    text-decoration: none; 
-    color: black;
-}
-
-.DocumentExpandDiv{
-    margin-left: auto;
-    width: auto;
-    font-family: "wide font";
-    font-size: 25px;
-    margin-right: 4px;
-}
-
-.DocumentDiv:hover{
-    background-color: silver;
-}
-
-.DocumentDescriptionDiv{
-    margin: auto;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    width: 18%;
-    display: flex;
-    height: fit-content;
-    margin-bottom: 20px;
+    margin-block: 0.5em;
 }
 
 .LogButton{

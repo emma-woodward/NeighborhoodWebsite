@@ -1,4 +1,8 @@
 import React, {useState } from 'react';
+import LinkIcon from '@mui/icons-material/Link';
+import ArticleIcon from '@mui/icons-material/Article'
+import { ListItem, ListItemIcon, ListItemButton, ListItemText, Card } from '@mui/material';
+
 /**
  * Document Component
  * 
@@ -9,24 +13,20 @@ import React, {useState } from 'react';
  */
 function Document(props) {
 
-const[expandedView, setExapndedView] = useState(false);
-
   return (
-      <div>
-        <div className="DocumentDiv">
-            <a href={props.DocumentLink}>
-            <div>
-                {props.DocumentTitle}
-            </div>
-            </a>
-        {expandedView ? <div className="DocumentExpandDiv" onClick={()=>{setExapndedView(!expandedView);}}>  -  </div> : 
-        <div className="DocumentExpandDiv" onClick={()=>{setExapndedView(!expandedView);}}>  +  </div>}
-
-    </div>
-    <div className="DocumentDescriptionDiv">
-            {expandedView && <p>{props.DocumentDesc}</p>}
-        </div>
-      </div>
+    <Card variant="outlined" className="Document">
+      <ListItem>
+        <ListItemIcon>
+          <ArticleIcon />
+        </ListItemIcon>
+        <ListItemText primary={props.DocumentTitle} secondary={props.DocumentDesc} />
+        <a href={props.DocumentLink}>
+          <ListItemButton>
+            <LinkIcon />
+          </ListItemButton>
+        </a>
+      </ListItem>
+    </Card>
   );
 }
 
