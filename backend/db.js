@@ -1,3 +1,4 @@
+// NOTE: Database user has to have a password, otherwise backend will throw an error.
 const Pool = require("pg").Pool;
 
 const pool = new Pool({

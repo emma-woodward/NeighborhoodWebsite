@@ -1,86 +1,109 @@
-import React, { useContext, useState } from 'react'; 
+import React, { useContext, useState } from "react";
 
 const AuthContext = React.createContext();
 
-export function useAuth(){
-    return useContext(AuthContext);
+export function useAuth() {
+  return useContext(AuthContext);
 }
 
-export function AuthProvider({children}){
-    const[currentUser, setCurrentUser] = useState();
-    
-    function login(email, password){
-        try{
-            fetch("/login",{
-                method: "POST",
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                  },
-                body: JSON.stringify({
-                    email: email,
-                    password: password
-                })
-            }).then((res)=> res.json()).then((json)=>{
-                //TODO: Check if the reponse is an error and handle it
-                setCurrentUser({
-                    sessionId: json.sessionId
-                })
+export function AuthProvider({ children }) {
+  const [currentUser, setCurrentUser] = useState();
 
-                  if(currentUser){
-                      console.log("FRONTEND: Logged in");
-                  }
-                  else{
-                      console.log("FRONTEND: Did not log in...");
-                  }
+  async function login(email, password) {
+    let errVal = 0;
+    try {
+      await fetch("/login", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.error) {
+            throw "Ope";
+          } else {
+            setCurrentUser({
+              sessionId: json.sessionId,
+            });
+          }
+        })
+        .catch((e) => {
+          return e;
+        });
+    } catch (e) {
+      throw e;
+    }
+  }
+  function logout() {
+    if (currentUser) {
+      try {
+        fetch("/logout", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            sessionId: currentUser.sessionId,
+          }),
+        })
+          .then((res) => res.json())
+          .then((json) => {
+            setCurrentUser(null);
+            console.log(json);
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+    }
+  }
 
-                  console.log(json.sessionId);
+  //TODO:
+  function resetPassword(oldPass, newPass) {
+    if (currentUser) {
+      try {
+        fetch("/reset_password", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            sessionId: currentUser.sessionId,
+            newPassword: newPass,
+            oldPassword: oldPass
+          }),
+        })
+          .then((res) => res.json())
+          .then((json) => {
+            if (json.error) {
+              return json.error;
+            } else {
+              setCurrentUser({
+                sessionId: json.sessionId,
               });
-        }
-        catch(e){
-            console.log(e);
-        }
-    }
-    function logout(){
-        if(currentUser){
-            try{
-                fetch("/logout",{
-                    method: "POST",
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                      },
-                    body: JSON.stringify({
-                        sessionId: currentUser.sessionId
-                    })
-                  }).then((res)=> res.json()).then((json)=>{
-                      setCurrentUser(null);
-                      console.log(json);
-                  });
             }
-            catch(e){
-                console.log(e);
-            }
-        }
-        else{
-
-        }
+          });
+      } catch (e) {
+        throw e;
+      }
+    } else {
     }
+  }
 
-    //TODO: 
-    function resetPassword(){
-        return null;
-    }
+  const value = {
+    currentUser,
+    login,
+    logout,
+    resetPassword,
+  };
 
-    const value = {
-        currentUser,
-        login,
-        logout
-    }
-
-    return(
-        <AuthContext.Provider value={value}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

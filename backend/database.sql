@@ -39,4 +39,4 @@ CREATE TABLE users(
 /*Creating the first user which is the admin user that will be allowed to
 create the rest of the users*/
 INSERT INTO users(email, hash, role) 
-VALUES('admin','', '0');
+VALUES('admin','$2b$10$jqJrlDBV.3KIL6clRZyC3Om7Ae3OiCV4REQ6fxxeIKE1Z/cKBd1Iu', '0');

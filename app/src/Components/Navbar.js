@@ -8,6 +8,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 //Page Imports
 import LoginPage from '../Pages/LoginPage';
+import ResetPage from '../Pages/ResetPassword'
 import HomePage from '../Pages/HomePage';
 import DashboardPage from '../Pages/DashboardPage';
 import PublicDocumentsPage from '../Pages/PublicDocumentsPage';
@@ -24,7 +25,7 @@ function Navbar() {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item >Reset Password</Dropdown.Item>
+        <Dropdown.Item><Link to="/reset_password">Reset Password</Link></Dropdown.Item>
         <Dropdown.Item onClick={logout}>Log Out</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
@@ -56,6 +57,7 @@ function Navbar() {
                 <PublicDocumentsPage />
               </Route>
 
+              <PrivateRoute path="/reset_password" component={ResetPage} />
               <PrivateRoute path="/dashboard" component={DashboardPage} />
               <PrivateRoute path="/more_announcements" component={MoreAnnouncementsPage} />
           </Switch>
