@@ -9,12 +9,3 @@ const PrivateRoute =()=> {
 };
 
 export default PrivateRoute;
-
-/*
-        <Route
-            {...rest}
-            render={props =>{
-                return currentUser ? <Element {...props} /> : <Navigate to="/login" />
-            }}
-        />
-*/

@@ -1,13 +1,12 @@
 import "./Styling.css";
 import React from "react";
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import { Route, Link, useNavigate, Routes } from "react-router-dom";
 import PrivateRoute from './Components/PrivateRoute';
 import 'bootstrap/dist/css/bootstrap.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useAuth } from './Contexts/AuthContext';
 import * as Pages from './Pages';
-import styles from './Styling.css';
 
 function App() {
   const {currentUser, logout} = useAuth();
@@ -29,7 +28,8 @@ function App() {
   );
 
   return (
-    <div style={styles}>
+    //style={styles}
+    <div>
       <div className="TheNavBar">
         <nav>
           {currentUser ? (

@@ -14,7 +14,7 @@ import { ListItem, ListItemIcon, ListItemButton, ListItemText, Card } from '@mui
 function Document(props) {
 
   return (
-    <Card variant="outlined" className="Document">
+    <Card variant="outlined" className="documents-card">
       <ListItem>
         <ListItemIcon>
           <ArticleIcon />

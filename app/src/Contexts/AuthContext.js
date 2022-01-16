@@ -109,6 +109,9 @@ export function AuthProvider({ children }) {
               });
               setCookies(json.sessionId);
             }
+          }).catch((e)=>{
+
+            throw e;
           });
       } catch (e) {
         throw e;

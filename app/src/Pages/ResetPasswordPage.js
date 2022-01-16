@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { TextField, Button } from "@material-ui/core";
-import { Link, Navigate } from "react-router-dom";
-import { useAuth } from "../Contexts/AuthContext";
+import React, { useState } from 'react';
+import { TextField, Button, Snackbar, Alert, Card } from '@mui/material'
+import { Link, Navigate } from 'react-router-dom';
+import { useAuth } from '../Contexts/AuthContext';
+import Slide from '@material-ui/core/Slide';
 
 function ResetPassword() {
   const [oldPass, setOldPass] = useState("");
@@ -9,12 +10,18 @@ function ResetPassword() {
   const [confirmNewPass, setConfirmNewPass] = useState("");
   const [error, setError] = useState("");
   const [passwordResetSuccessful, setPasswordResetSuccessful] = useState(false);
+
   const { currentUser, resetPassword } = useAuth();
+  var errorOccurred = false;
+
+  function TransitionDown(props) {
+    return <Slide {...props} direction="down" />;
+  }
 
   const successScreen = (
     <div className="textCenter">
       <h1>Password Successfully Reset</h1>
-      <Button size="large" variant="outlined">
+      <Button variant="outlined">
         <Link to="/">Go back to home!</Link>
       </Button>
     </div>
@@ -54,32 +61,43 @@ function ResetPassword() {
         }}
       ></TextField>{" "}
       <br /> <br />
-      <Button size="large" variant="outlined" onClick={()=>{
+      <Button variant="contained" style={{width: window.innerWidth / 4,}} onClick={()=>{
             setError('');
+            errorOccurred = false;
     
             if (newPass === confirmNewPass) {
               resetPassword(oldPass, newPass)
                 .catch((e) => {
                   setError("Old password is not correct");
-                  console.log(e);
+                  errorOccurred = true;
                 })
                 .finally(() => {
-                  setPasswordResetSuccessful(true);
+                  if(!errorOccurred){
+                    setPasswordResetSuccessful(true);
+                  }
                 });
             } else {
               setError("New password does not match confirmed password");
+              errorOccurred = true;
             }
       }}>
         Reset Password
       </Button>
+      <Snackbar anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+      }} 
+      TransitionComponent={TransitionDown} open={errorOccurred} autoHideDuration={6000}>
+        <Alert severity="error" >{error}</Alert>
+      </Snackbar>
     </div>
   );
 
   return (
-    <div className="textCenter">
+    <Card className="reset-password-card">
       {!currentUser && <Navigate to="/login" />}
       {passwordResetSuccessful ? successScreen : resetScreen}
-    </div>
+    </Card>
   );
 }
 

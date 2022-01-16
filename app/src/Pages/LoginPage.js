@@ -1,5 +1,5 @@
 import React, {useState } from 'react';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button } from '@mui/material';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../Contexts/AuthContext';
 
@@ -18,17 +18,24 @@ function LoginPage() {
     }
 
   return (
-    <div className="textCenter">
+    <div style={{
+      textAlign: 'center',
+      margin: '5%',
+    }}>
       {currentUser && <Navigate to="/" />}
         <h1>Login</h1>
         <p style={{color: "red"}}>{error}</p>
-        <TextField onChange={e=>{setEmail(e.target.value)}} label="Email" style={{
-                width: window.innerWidth / 4
-                }}></TextField> <br />
-        <TextField type="password" onChange={e=>{setPass(e.target.value)}} label="Password" style={{
-                width: window.innerWidth / 4
-                }}></TextField> <br /> <br />
-        <Button size="large" variant="outlined" onClick={handleLoginSubmit}>Log in</Button>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          gap: '1em',
+        }}>
+          <TextField onChange={e=>{setEmail(e.target.value)}} label="Email" style={{ width: '20%'}}></TextField>
+          <TextField type="password" onChange={e=>{setPass(e.target.value)}} label="Password" style={{ width: '20%' }}></TextField> 
+          <Button size="large" variant="contained" onClick={handleLoginSubmit} style={{ width: '20%' }}>Log in</Button>
+        </div>
     </div>
   );
 }
