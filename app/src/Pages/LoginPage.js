@@ -1,6 +1,6 @@
 import React, {useState } from 'react';
 import { TextField, Button } from '@material-ui/core';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../Contexts/AuthContext';
 
 function LoginPage() {
@@ -19,7 +19,7 @@ function LoginPage() {
 
   return (
     <div className="textCenter">
-      {currentUser && <Redirect to="/" />}
+      {currentUser && <Navigate to="/" />}
         <h1>Login</h1>
         <p style={{color: "red"}}>{error}</p>
         <TextField onChange={e=>{setEmail(e.target.value)}} label="Email" style={{

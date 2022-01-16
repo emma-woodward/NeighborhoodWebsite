@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TextField, Button } from "@material-ui/core";
-import { Redirect, Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 
 function ResetPassword() {
@@ -77,7 +77,7 @@ function ResetPassword() {
 
   return (
     <div className="textCenter">
-      {!currentUser && <Redirect to="/login" />}
+      {!currentUser && <Navigate to="/login" />}
       {passwordResetSuccessful ? successScreen : resetScreen}
     </div>
   );
