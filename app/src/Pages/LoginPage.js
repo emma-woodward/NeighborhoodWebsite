@@ -6,23 +6,15 @@ import { useAuth } from '../Contexts/AuthContext';
 function LoginPage() {
     const[email, setEmail] = useState('');
     const[pass, setPass] = useState('');
-    const [error, setError] = useState("");
+    const[error, setError] = useState('');
     const {currentUser, login} = useAuth();
 
-    function handleLoginSubmit(){
+   function handleLoginSubmit(){
       setError('');
-      try{
-        const retVal = login(email, pass);
-
-        if(retVal){
-          setError('Email or password is incorrect, try again!');
-          setPass('');
-        }
-      }
-      catch(e){
+      login(email, pass).catch((e)=>{
         setError('Email or password is incorrect, try again!');
         setPass('');
-      }
+      });
     }
 
   return (

@@ -10,7 +10,6 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
 
   async function login(email, password) {
-    let errVal = 0;
     try {
       await fetch("/login", {
         method: "POST",
@@ -26,7 +25,7 @@ export function AuthProvider({ children }) {
         .then((res) => res.json())
         .then((json) => {
           if (json.error) {
-            throw "Ope";
+              throw "Ope!";
           } else {
             setCurrentUser({
               sessionId: json.sessionId,
@@ -34,7 +33,7 @@ export function AuthProvider({ children }) {
           }
         })
         .catch((e) => {
-          return e;
+            throw e;
         });
     } catch (e) {
       throw e;
@@ -84,7 +83,7 @@ export function AuthProvider({ children }) {
           .then((res) => res.json())
           .then((json) => {
             if (json.error) {
-              return json.error;
+              return -1;
             } else {
               setCurrentUser({
                 sessionId: json.sessionId,
