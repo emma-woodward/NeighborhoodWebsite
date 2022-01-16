@@ -1,3 +1,4 @@
+import { Card } from '@material-ui/core';
 import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import Announcement from '../Components/Announcement';
@@ -50,7 +51,7 @@ function DashboardPage() {
   }, [])
 
   return (
-    <div className="DashboardPage">
+    <Card className="DashboardPage">
         <div>
           <h1>Most Recent Announcement</h1>
           <Announcement title={announcement.title} message={announcement.message} timestamp={convertTimeStamp(announcement.timeStamp)} />
@@ -60,7 +61,7 @@ function DashboardPage() {
             color: "blue"
           }}><Link to="/more_announcements">More Announcements</Link></p>
         </div>
-    </div>
+    </Card>
   );
 }
 

@@ -1,6 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 const AuthContext = React.createContext();
+
+const setCookies =(sessionId)=>{
+  let cookie = 'sessionId=';
+  sessionId === null ? cookie += '' : cookie += sessionId;
+  document.cookie = cookie;
+};
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -9,35 +15,47 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
 
+  useEffect(()=>{
+    let name = 'sessionid=';
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let grabbedSessionId = decodedCookie.substring(name.length, decodedCookie.length);
+    if(grabbedSessionId.length > 0){
+      setCurrentUser({
+        sessionId: grabbedSessionId,
+      });
+    }
+  });
+
   async function login(email, password) {
     try {
-      await fetch("/login", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          if (json.error) {
-              throw json.error;
-          } else {
-            setCurrentUser({
-              sessionId: json.sessionId,
-            });
-          }
+        await fetch("/login", {
+         method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
         })
-        .catch((e) => {
-            throw e;
-        });
-    } catch (e) {
-      throw e;
-    }
+          .then((res) => res.json())
+          .then((json) => {
+            if (json.error) {
+                throw json.error;
+            } else {
+              setCurrentUser({
+                sessionId: json.sessionId,
+              });
+              setCookies(json.sessionId);
+            }
+          })
+          .catch((e) => {
+              throw e;
+          });
+      } catch (e) {
+        throw e;
+      }
   }
   function logout() {
     if (currentUser) {
@@ -55,7 +73,7 @@ export function AuthProvider({ children }) {
           .then((res) => res.json())
           .then((json) => {
             setCurrentUser(null);
-            console.log(json);
+            setCookies(null);
           });
       } catch (e) {
         console.log(e);
@@ -87,6 +105,7 @@ export function AuthProvider({ children }) {
               setCurrentUser({
                 sessionId: json.sessionId,
               });
+              setCookies(json.sessionId);
             }
           });
       } catch (e) {
