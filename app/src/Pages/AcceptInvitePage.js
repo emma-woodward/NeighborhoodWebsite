@@ -3,12 +3,6 @@ import { TextField, Button } from "@mui/material";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 
-/*
-    Notes:
-        - Need to create a table in db for invites with expiration date
-        - Finish admin side of things
-*/
-
 function AcceptInvitePage() {
 	const { currentUser, login } = useAuth();
 	const [successfulInvite, setSuccessfulInvite] = useState(false);

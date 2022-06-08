@@ -1,4 +1,4 @@
-CREATE DATABASE neighborhood;
+-- CREATE DATABASE neighborhood;
 
 CREATE TABLE announcements(
     aid SERIAL PRIMARY KEY, 
@@ -11,9 +11,7 @@ INSERT INTO announcements(ts, title, message)
 VALUES('2004-10-19 10:23:54', 'example title', 
 'this is a message that will go out to people');
 
-/**
-For class 0 is private and 1 is public
-*/
+-- For class 0 is private and 1 is public
 CREATE TABLE documents(
     did SERIAL PRIMARY KEY, 
     class BOOLEAN,
@@ -25,9 +23,8 @@ CREATE TABLE documents(
 INSERT INTO documents(class, title, summary, link)
 VALUES('0', 'Database Document Test', 'This is a cool test', 'https://google.com');
 
-/**
-The admin role is 0 and the normal user role is 1
-*/
+
+-- The admin role is 0 and the normal user role is 1
 CREATE TABLE users(
     email VARCHAR(50) NOT NULL,
     hash VARCHAR(500) NOT NULL,
@@ -36,7 +33,14 @@ CREATE TABLE users(
     expires VARCHAR(20)
 );
 
-/*Creating the first user which is the admin user that will be allowed to
-create the rest of the users*/
+-- The admin role is 0 and the normal user role is 1
+CREATE TABLE invites(
+    hash VARCHAR(500) NOT NULL,
+    expires VARCHAR(20)
+);
+
+
+--Creating the first user which is the admin user that will be allowed to
+--create the rest of the users; Password is 'password'.
 INSERT INTO users(email, hash, role) 
 VALUES('admin','$2b$10$jqJrlDBV.3KIL6clRZyC3Om7Ae3OiCV4REQ6fxxeIKE1Z/cKBd1Iu', '0');
