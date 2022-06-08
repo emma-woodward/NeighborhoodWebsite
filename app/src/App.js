@@ -54,9 +54,21 @@ function App() {
                 </Link>
               </li>
             )}
+              {currentUser && (
+              <li>
+                <Link to="/admin_dashboard" className="IndividualLinks">
+                  <div>Admin Dashboard</div>
+                </Link>
+              </li>
+            )}
             <li>
               <Link to="/public_documents" className="IndividualLinks">
                 <div>Public Documents</div>
+              </Link>
+            </li>
+            <li>
+              <Link to="/accept_invite" className="IndividualLinks">
+                <div>Accept Invite</div>
               </Link>
             </li>
           </ul>
@@ -69,9 +81,15 @@ function App() {
 
         <Route path="/public_documents" element={<Pages.PublicDocumentsPage />} />
 
+        <Route path="/accept_invite" element={<Pages.AcceptInvitePage />} />
+
         {/* Private Routes */}
         <Route path="/dashboard" element={<PrivateRoute/>}>
           <Route path="/dashboard" element={<Pages.DashboardPage />} />
+        </Route>
+
+        <Route path="/admin_dashboard" element={<PrivateRoute/>}>
+          <Route path="/admin_dashboard" element={<Pages.AdminDashboardPage />} />
         </Route>
 
         <Route path="/dashboard" element={<PrivateRoute/>}>
