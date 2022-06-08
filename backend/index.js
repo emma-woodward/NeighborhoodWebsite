@@ -3,6 +3,7 @@ const cors = require("cors");
 const pool = require("./db");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const { traceDeprecation } = require("process");
 const app = express();
 
 // NOTE: Port may change
@@ -31,6 +32,7 @@ async function isValidAdmin(sessionId) {
 	await pool.query(
 		"UPDATE users SET sessionId = null, expires = null WHERE expires::date < current_date::date"
 	);
+
 	const user = await pool.query(
 		"SELECT * FROM users WHERE sessionId = $1 AND role = '0'",
 		[sessionId]
@@ -43,33 +45,24 @@ async function isValidAdmin(sessionId) {
 	return false;
 }
 
-async function isValidInvite(inviteStr) {
+app.post("/valid_invite", async (req, res) => {
+	const inviteStr = req.body.invite;
+
 	await pool.query(
 		"DELETE FROM invites WHERE expires::date < current_date::date"
 	);
 
-	//TODO: Hash the inviteStr
-	const hashedInvite = "";
-
-	const invite = await pool.query("SELECT * FROM invites WHERE hash = $1", [
-		hashedInvite,
-	]);
-
-	if (invite) {
-		return true;
-	}
-
-	return false;
-}
-
-app.post("/valid_invite", async (req, res) => {
-	const invite = req.body.invite;
-	const isValid = await isValidInvite(invite);
-	if (isValid) {
-		res.sendStatus(200);
-	} else {
-		res.sendStatus(404);
-	}
+	await pool
+		.query("SELECT * FROM invites WHERE hash = $1", [inviteStr])
+		.then((invite) => {
+			if (invite.rowCount === 1) {
+				res.sendStatus(200);
+			} else if (invite.rowCount > 1) {
+				res.sendStatus(400);
+			} else {
+				res.sendStatus(400);
+			}
+		});
 });
 
 /*
@@ -79,21 +72,54 @@ app.post("/valid_invite", async (req, res) => {
 */
 app.post("/create_account", async (req, res) => {
 	const invite = req.body.invite;
-	const isValid = await isValidInite(invite);
 
-	// TODO: Continue to create account
-	if (isValid) {
-		const email = req.body.email;
-		const chosenPassword = req.body.chosenPassword;
+	await pool.query(
+		"DELETE FROM invites WHERE expires::date < current_date::date"
+	);
 
-		res.sendStatus(200);
+	await pool
+		.query("SELECT * FROM invites WHERE hash = $1", [inviteStr])
+		.then((invite) => {
+			if (invite.rowCount === 1) {
+				res.sendStatus(200);
+				// TODO: Continue to create account
+				const email = req.body.email;
+				const chosenPassword = req.body.chosenPassword;
+			} else if (invite.rowCount > 1) {
+				res.sendStatus(400);
+			} else {
+				res.sendStatus(400);
+			}
+		});
+});
+
+app.post("/create_invite", async (req, res) => {
+	const sessionId = req.body.sessionId;
+	const validSessionId = await isValidAdmin(sessionId);
+
+	if (validSessionId) {
+		try {
+			const inviteId = crypto.randomBytes(50).toString("hex");
+
+			pool.query(
+				"INSERT INTO invites(hash, expires) VALUES ($1, (current_date + 1))",
+				[inviteId]
+			);
+
+			res.send({
+				invite: inviteId,
+			});
+		} catch (e) {
+			console.log(e);
+		}
 	} else {
-		res.sendStatus(404);
+		res.send("Error: Could not create invite");
 	}
 });
 
 //Routes
 //Create a new user
+// TODO: Finish this, and clean it up
 app.post("/create_user", async (req, res) => {
 	// const user = await pool.query("SELECT * FROM users WHERE sessionId = $1", [req.body.sessionId]);
 
@@ -181,6 +207,7 @@ app.post("/logout", async (req, res) => {
 app.post("/delete_user", async (req, res) => {
 	try {
 		if (isValidAdmin(req.sessionId)) {
+			// TODO
 		}
 	} catch (e) {
 		console.log(e);
@@ -188,6 +215,7 @@ app.post("/delete_user", async (req, res) => {
 });
 
 //Modify a users password
+// TODO: Clean this up
 app.post("/reset_password", async (req, res) => {
 	try {
 		if (isValidUser(req.body.sessionId)) {
@@ -273,6 +301,7 @@ app.post("/announcements", async (req, res) => {
 app.post("/create_announcement", async (req, res) => {
 	try {
 		if (isValidAdmin(req.sessionId)) {
+			// TODO
 		}
 	} catch (e) {
 		console.log(e);
