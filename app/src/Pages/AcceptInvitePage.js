@@ -6,39 +6,52 @@ import { useAuth } from "../Contexts/AuthContext";
 function AcceptInvitePage() {
 	const { currentUser, login } = useAuth();
 	const [successfulInvite, setSuccessfulInvite] = useState(false);
-	const [error, setError] = useState("");
-	const [inviteId, setInviteId] = useState("");
+	const [chosenEmail, setChosenEmail] = useState("");
+	const [chosenPassword, setChosenPassword] = useState("");
 
-	function isValidInvite() {
-		console.log("this happened");
-		try {
-			fetch("/valid_invite", {
-				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					invite: inviteId,
-				}),
-			})
-				.then((res) => res.json())
-				.then((json) => {
-					if (json.error) {
-						throw json.error;
-					} else {
-						setSuccessfulInvite(true);
-					}
+	const [error, setError] = useState("");
+	const [emailError, setEmailError] = useState("");
+	const [passwordError, setPasswordError] = useState("");
+
+	function handleLogin(email, pass) {
+		login(email, pass).catch((e) => {
+			console.log("Email or password is incorrect, try again!");
+		});
+	}
+
+	function isValidInvite(inviteId) {
+		if (inviteId.trim() !== "") {
+			try {
+				fetch("/valid_invite", {
+					method: "POST",
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						invite: inviteId,
+					}),
 				})
-				.catch((e) => {
-					throw e;
-				});
-		} catch (e) {
-			throw e;
+					.then((res) => {
+						if (res.status !== 200) {
+							setError("Invalid invitation code.");
+						} else {
+							setError("");
+							setSuccessfulInvite(true);
+						}
+					})
+					.catch((e) => {
+						throw e;
+					});
+			} catch (e) {
+				throw e;
+			}
+		} else {
+			setError("");
 		}
 	}
 
-	function redeemInvite(inviteId, email, pass) {
+	function createAccount(inviteId, email, pass) {
 		try {
 			fetch("/create_account", {
 				method: "POST",
@@ -58,6 +71,7 @@ function AcceptInvitePage() {
 						throw json.error;
 					} else {
 						// TODO
+						handleLogin(email, pass);
 					}
 				})
 				.catch((e) => {
@@ -68,12 +82,9 @@ function AcceptInvitePage() {
 		}
 	}
 
-	/*
-        Clean up the stuff below; don't need to check if the user is logged in already twice
-    */
-
 	return (
 		<div>
+			{currentUser && <Navigate to="/" />}
 			{successfulInvite ? (
 				<div
 					style={{
@@ -81,7 +92,6 @@ function AcceptInvitePage() {
 						margin: "5%",
 					}}
 				>
-					{currentUser && <Navigate to="/" />}
 					<h1>Setup Your Account</h1>
 					<p style={{ color: "red" }}>{error}</p>
 					<div
@@ -96,11 +106,22 @@ function AcceptInvitePage() {
 						<TextField
 							type="email"
 							label="Email"
+							defaultValue=""
+							required
+							error={emailError}
+							onChange={(e) => {
+								setChosenEmail(e.target.value);
+							}}
 							style={{ width: "20%" }}
 						></TextField>
 						<TextField
 							type="password"
-							label="password"
+							label="Password"
+							required
+							error={passwordError}
+							onChange={(e) => {
+								setChosenPassword(e.target.value);
+							}}
 							style={{ width: "20%" }}
 						></TextField>
 						<Button size="large" variant="contained" style={{ width: "20%" }}>
@@ -115,9 +136,7 @@ function AcceptInvitePage() {
 						margin: "5%",
 					}}
 				>
-					{currentUser && <Navigate to="/" />}
 					<h1>Accept Invite</h1>
-					<p style={{ color: "red" }}>{error}</p>
 					<div
 						style={{
 							display: "flex",
@@ -125,24 +144,20 @@ function AcceptInvitePage() {
 							justifyContent: "center",
 							flexDirection: "column",
 							gap: "1em",
+							paddingTop: "1%",
 						}}
 					>
 						<TextField
+							required
 							type="password"
-							label="Enter One Time Password"
-							style={{ width: "20%" }}
+							label="Enter Invitation Code"
+							helperText={error}
+							error={error.length !== 0}
+							style={{ width: "40%" }}
 							onChange={(e) => {
-								setInviteId(e.target.value);
+								isValidInvite(e.target.value);
 							}}
 						></TextField>
-						<Button
-							size="large"
-							variant="contained"
-							style={{ width: "20%" }}
-							onClick={isValidInvite()}
-						>
-							Continue
-						</Button>
 					</div>
 				</div>
 			)}

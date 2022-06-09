@@ -13,6 +13,7 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 
+// TODO: Create a db routine for this
 async function isValidUser(sessionId) {
 	await pool.query(
 		"UPDATE users SET sessionId = null, expires = null WHERE expires::date < current_date::date"
@@ -28,6 +29,7 @@ async function isValidUser(sessionId) {
 	return false;
 }
 
+// TODO: Create a db routine for this
 async function isValidAdmin(sessionId) {
 	await pool.query(
 		"UPDATE users SET sessionId = null, expires = null WHERE expires::date < current_date::date"
