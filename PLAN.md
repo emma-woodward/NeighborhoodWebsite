@@ -2,7 +2,7 @@
 
 # Today (6/11/22)
 
-- Put invitation code in it's own component
+- Put invitation code in it's own component\*\*
 - Make dashboards look more visually pleasing.
 - Apply prettier to all js files [Apply prettier with CLI](https://github.com/prettier/prettier-vscode/issues/321)
 - If there's more time and energy, start cleaning up backend code.

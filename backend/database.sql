@@ -36,6 +36,7 @@ CREATE TABLE users(
 -- The admin role is 0 and the normal user role is 1
 CREATE TABLE invites(
     hash VARCHAR(500) NOT NULL,
+    nickname VARCHAR(50),
     expires VARCHAR(20)
 );
 
