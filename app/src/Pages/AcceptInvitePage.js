@@ -6,16 +6,62 @@ import { useAuth } from "../Contexts/AuthContext";
 function AcceptInvitePage() {
 	const { currentUser, login } = useAuth();
 	const [successfulInvite, setSuccessfulInvite] = useState(false);
+	const [inviteId, setInviteId] = useState("");
 	const [chosenEmail, setChosenEmail] = useState("");
 	const [chosenPassword, setChosenPassword] = useState("");
 
 	const [error, setError] = useState("");
-	const [emailError, setEmailError] = useState("");
+	const [emailError, setEmailError] = useState(""); // TODO
 	const [passwordError, setPasswordError] = useState("");
+
+	function verifyPassword(pass) {
+		setPasswordError("");
+		setChosenPassword(pass);
+
+		if (pass.trim() !== "") {
+			/* Following the basic password rules:
+			 * At least 8 characters long
+			 * At least one uppercase letter
+			 * At least one special character (!, $, etc)
+			 */
+			const tPass = pass.trim();
+			var isEightCharsLong = tPass.length >= 8;
+			var hasOneUppercaseLetter = false;
+			var hasOneSpecialChar = false;
+
+			for (var i = 0; i < tPass.length; i++) {
+				const c = tPass.charCodeAt(i);
+
+				if (c >= 33 && c <= 47) {
+					hasOneSpecialChar = true;
+				} else if (c >= 65 && c <= 90) {
+					hasOneUppercaseLetter = true;
+				}
+			}
+
+			var errMsg = "";
+
+			if (!isEightCharsLong) {
+				errMsg += "Password must be at least eight characters long. ";
+			}
+
+			if (!hasOneUppercaseLetter) {
+				errMsg += "Password must contain at least one uppercase letter. ";
+			}
+
+			if (!hasOneSpecialChar) {
+				errMsg +=
+					"Password must contain at least one special character (!, #, $, %, etc). ";
+			}
+
+			setPasswordError(errMsg);
+		}
+	}
 
 	function handleLogin(email, pass) {
 		login(email, pass).catch((e) => {
 			console.log("Email or password is incorrect, try again!");
+			console.log(e);
 		});
 	}
 
@@ -34,9 +80,12 @@ function AcceptInvitePage() {
 				})
 					.then((res) => {
 						if (res.status !== 200) {
-							setError("Invalid invitation code.");
+							res.text().then((serverErr) => {
+								setError(serverErr);
+							});
 						} else {
 							setError("");
+							setInviteId(inviteId);
 							setSuccessfulInvite(true);
 						}
 					})
@@ -51,34 +100,33 @@ function AcceptInvitePage() {
 		}
 	}
 
-	function createAccount(inviteId, email, pass) {
-		try {
-			fetch("/create_account", {
-				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					invite: inviteId,
-					email: email,
-					password: pass,
-				}),
-			})
-				.then((res) => res.json())
-				.then((json) => {
-					if (json.error) {
-						throw json.error;
-					} else {
-						// TODO
-						handleLogin(email, pass);
-					}
+	function createAccount() {
+		if (passwordError.length === 0) {
+			try {
+				fetch("/create_account", {
+					method: "POST",
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						invite: inviteId,
+						email: chosenEmail,
+						password: chosenPassword,
+					}),
 				})
-				.catch((e) => {
-					throw e;
-				});
-		} catch (e) {
-			throw e;
+					.then((res) => {
+						if (res.status !== 200) {
+						} else {
+							handleLogin(chosenEmail, chosenPassword);
+						}
+					})
+					.catch((e) => {
+						throw e;
+					});
+			} catch (e) {
+				throw e;
+			}
 		}
 	}
 
@@ -119,12 +167,18 @@ function AcceptInvitePage() {
 							label="Password"
 							required
 							error={passwordError}
+							helperText={passwordError}
 							onChange={(e) => {
-								setChosenPassword(e.target.value);
+								verifyPassword(e.target.value);
 							}}
 							style={{ width: "20%" }}
 						></TextField>
-						<Button size="large" variant="contained" style={{ width: "20%" }}>
+						<Button
+							size="large"
+							variant="contained"
+							style={{ width: "20%" }}
+							onClick={createAccount}
+						>
 							Create Account
 						</Button>
 					</div>

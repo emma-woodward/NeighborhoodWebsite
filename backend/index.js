@@ -49,6 +49,15 @@ async function isValidAdmin(sessionId) {
 
 app.post("/valid_invite", async (req, res) => {
 	const inviteStr = req.body.invite;
+	var existed = false;
+
+	await pool
+		.query("SELECT * FROM invites WHERE hash = $1", [inviteStr])
+		.then((invite) => {
+			if (invite.rowCount === 1) {
+				existed = true;
+			}
+		});
 
 	await pool.query(
 		"DELETE FROM invites WHERE expires::date < current_date::date"
@@ -58,11 +67,17 @@ app.post("/valid_invite", async (req, res) => {
 		.query("SELECT * FROM invites WHERE hash = $1", [inviteStr])
 		.then((invite) => {
 			if (invite.rowCount === 1) {
-				res.sendStatus(200);
+				res.status(200).send("");
 			} else if (invite.rowCount > 1) {
-				res.sendStatus(400);
+				res.status(404).send("Invalid invitation code.");
 			} else {
-				res.sendStatus(400);
+				existed
+					? res
+							.status(400)
+							.send(
+								"Invitation code has expired, ask for a new one from the site maintainer"
+							)
+					: res.status(404).send("Invalid invitation code.");
 			}
 		});
 });
@@ -73,7 +88,18 @@ app.post("/valid_invite", async (req, res) => {
   they can create an account with an invitation that an admin user generated and gave to them. 
 */
 app.post("/create_account", async (req, res) => {
-	const invite = req.body.invite;
+	const inviteStr = req.body.invite;
+	const email = req.body.email;
+	const chosenPassword = req.body.password;
+	var existed = false;
+
+	await pool
+		.query("SELECT * FROM invites WHERE hash = $1", [inviteStr])
+		.then((invite) => {
+			if (invite.rowCount === 1) {
+				existed = true;
+			}
+		});
 
 	await pool.query(
 		"DELETE FROM invites WHERE expires::date < current_date::date"
@@ -83,14 +109,30 @@ app.post("/create_account", async (req, res) => {
 		.query("SELECT * FROM invites WHERE hash = $1", [inviteStr])
 		.then((invite) => {
 			if (invite.rowCount === 1) {
-				res.sendStatus(200);
-				// TODO: Continue to create account
-				const email = req.body.email;
-				const chosenPassword = req.body.chosenPassword;
-			} else if (invite.rowCount > 1) {
-				res.sendStatus(400);
+				bcrypt.hash(chosenPassword, 10, (hashErr, hash) => {
+					if (hashErr) {
+						throw hashErr;
+					}
+
+					pool
+						.query("INSERT INTO users(email, hash, role) VALUES ($1, $2, $3)", [
+							email,
+							hash,
+							1,
+						])
+						.then((result) => {
+							pool.query("DELETE FROM invites WHERE hash = $1", [inviteStr]);
+							res.status(200).send("").end();
+						});
+				});
+			} else if (existed) {
+				res
+					.status(400)
+					.send(
+						"Invitation code has expired, ask for a new one from the site maintainer"
+					);
 			} else {
-				res.sendStatus(400);
+				res.status(400).send("Invalid invitation code");
 			}
 		});
 });
@@ -145,11 +187,20 @@ app.post("/create_user", async (req, res) => {
 			res.send({ success: "user created" });
 		} catch (e) {
 			res.send({ error: "User was not created" });
-			console.log(e);
 		}
 	} else {
 		res.send({ error: "Could not create user..." });
 	}
+});
+
+app.post("/remove_invite", async (req, res) => {
+	const inviteStr = req.body.invite;
+
+	await pool
+		.query("DELETE FROM invites WHERE hash = $1", [inviteStr])
+		.then((r) => {
+			res.status(200).send("");
+		});
 });
 
 //Login
