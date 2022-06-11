@@ -1,21 +1,20 @@
 # The Plan
 
-# Today (6/10/22)
+# Today (6/11/22)
 
-- Complete invitations.
+- Put invitation code in it's own component
 - Make dashboards look more visually pleasing.
+- Apply prettier to all js files [Apply prettier with CLI](https://github.com/prettier/prettier-vscode/issues/321)
 - If there's more time and energy, start cleaning up backend code.
 
 Notes:
 
+- Create endpoint to remove all invites
+- Perhaps have an associated name with each of the invites and allow an admin to view a list of active invites
 - Figure out a new dashboard layout that makes sense and looks good.
-- Talk to Eric to see if he has shifted his needs
 - Look at testing the backend and frontend.
   - Use supertest for backend; may require some refactoring.
   - For the frontend, take a look at this [React Testing](https://reactjs.org/docs/testing.html)
-- 2FA???
-- BIG THING: Get invites to work.
-  - Email them the login info with a temp pass
 
 ## Version 0.0
 
